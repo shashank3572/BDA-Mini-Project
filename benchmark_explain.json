@@ -1,0 +1,470 @@
+{
+  "before": {
+    "explainVersion": "2",
+    "stages": [
+      {
+        "$cursor": {
+          "queryPlanner": {
+            "namespace": "library_analytics.transactions",
+            "parsedQuery": {
+              "issueDate": {
+                "$gte": "2026-04-15 14:41:45.273000"
+              }
+            },
+            "indexFilterSet": false,
+            "queryHash": "7BA113F4",
+            "planCacheShapeHash": "7BA113F4",
+            "planCacheKey": "9ADDBF75",
+            "optimizationTimeMillis": 1,
+            "cursorType": "regular",
+            "maxIndexedOrSolutionsReached": false,
+            "maxIndexedAndSolutionsReached": false,
+            "maxScansToExplodeReached": false,
+            "prunedSimilarIndexes": false,
+            "winningPlan": {
+              "isCached": false,
+              "queryPlan": {
+                "stage": "GROUP",
+                "planNodeId": 3,
+                "inputStage": {
+                  "stage": "COLLSCAN",
+                  "planNodeId": 1,
+                  "filter": {
+                    "issueDate": {
+                      "$gte": "2026-04-15 14:41:45.273000"
+                    }
+                  },
+                  "nss": "library_analytics.transactions",
+                  "direction": "forward"
+                }
+              },
+              "slotBasedPlan": {
+                "slots": "$$RESULT=s9 env: { s4 = TimeZoneDatabase(America/Winnipeg...Canada/Newfoundland) (timeZoneDB) }",
+                "stages": "[3] project [s9 = newObj(\"_id\", s7, \"count\", s8)] \n[3] project [s8 = (convert ( s6, int32) ?: s6)] \n[3] group [s7] [s6 = count()] spillSlots[s5] mergingExprs[sum(s5)] \n[3] project [s7 = (\n    let [\n        l4.0 = month(s3, TimeZone(UTC)) \n    ] \n    in \n        if exists(l4.0) \n        then makeOwn(move(l4.0)) \n        else \n            if (typeMatch(s3, 1088) ?: true) \n            then null \n            else \n                if typeMatch(s3, 131712) \n                then Nothing \n                else fail(5157904, \"month parameter 'date' must be coercible to date\") \n?: null)] \n[1] filter {traverseF(s3, lambda(l2.0) { ((move(l2.0) >= Date(1776264105273)) ?: false) }, false)} \n[1] scan generic [s1 = record, s2 = recordId] [s3 = issueDate] @\"7e7df1c0-0a3d-476e-b0a6-661dd7969cd0\" "
+              }
+            },
+            "rejectedPlans": []
+          },
+          "executionStats": {
+            "executionSuccess": true,
+            "nReturned": 7,
+            "executionTimeMillis": 150,
+            "totalKeysExamined": 0,
+            "totalDocsExamined": 100000,
+            "executionStages": {
+              "stage": "project",
+              "planNodeId": 3,
+              "nReturned": 7,
+              "executionTimeMillisEstimate": 148,
+              "opens": 1,
+              "closes": 1,
+              "saveState": 14,
+              "restoreState": 13,
+              "isEOF": 1,
+              "projections": {
+                "9": "newObj(\"_id\", s7, \"count\", s8) "
+              },
+              "inputStage": {
+                "stage": "project",
+                "planNodeId": 3,
+                "nReturned": 7,
+                "executionTimeMillisEstimate": 148,
+                "opens": 1,
+                "closes": 1,
+                "saveState": 14,
+                "restoreState": 13,
+                "isEOF": 1,
+                "projections": {
+                  "8": "(convert ( s6, int32) ?: s6) "
+                },
+                "inputStage": {
+                  "stage": "group",
+                  "planNodeId": 3,
+                  "nReturned": 7,
+                  "executionTimeMillisEstimate": 148,
+                  "opens": 1,
+                  "closes": 1,
+                  "saveState": 14,
+                  "restoreState": 13,
+                  "isEOF": 1,
+                  "groupBySlots": [
+                    7
+                  ],
+                  "expressions": {
+                    "6": "count() ",
+                    "initExprs": {
+                      "6": null,
+                      "mergingExprs": {
+                        "5": "sum(s5) "
+                      }
+                    }
+                  },
+                  "usedDisk": false,
+                  "spills": 0,
+                  "spilledBytes": 0,
+                  "spilledRecords": 0,
+                  "spilledDataStorageSize": 0,
+                  "peakTrackedMemBytes": 350,
+                  "inputStage": {
+                    "stage": "project",
+                    "planNodeId": 3,
+                    "nReturned": 24606,
+                    "executionTimeMillisEstimate": 137,
+                    "opens": 1,
+                    "closes": 1,
+                    "saveState": 14,
+                    "restoreState": 13,
+                    "isEOF": 1,
+                    "projections": {
+                      "7": "(\n    let [\n        l4.0 = month(s3, TimeZone(UTC)) \n    ] \n    in \n        if exists(l4.0) \n        then makeOwn(move(l4.0)) \n        else \n            if (typeMatch(s3, 1088) ?: true) \n            then null \n            else \n                if typeMatch(s3, 131712) \n                then Nothing \n                else fail(5157904, \"month parameter 'date' must be coercible to date\") \n?: null) "
+                    },
+                    "inputStage": {
+                      "stage": "filter",
+                      "planNodeId": 1,
+                      "nReturned": 24606,
+                      "executionTimeMillisEstimate": 121,
+                      "opens": 1,
+                      "closes": 1,
+                      "saveState": 14,
+                      "restoreState": 13,
+                      "isEOF": 1,
+                      "numTested": 100000,
+                      "filter": "traverseF(s3, lambda(l2.0) { ((move(l2.0) >= Date(1776264105273)) ?: false) }, false) ",
+                      "inputStage": {
+                        "stage": "scan",
+                        "planNodeId": 1,
+                        "nReturned": 100000,
+                        "executionTimeMillisEstimate": 83,
+                        "opens": 1,
+                        "closes": 1,
+                        "saveState": 14,
+                        "restoreState": 13,
+                        "isEOF": 1,
+                        "numReads": 100000,
+                        "recordSlot": 1,
+                        "recordIdSlot": 2,
+                        "scanFieldNames": [
+                          "issueDate"
+                        ],
+                        "scanFieldSlots": [
+                          3
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "nReturned": 7,
+        "executionTimeMillisEstimate": 148
+      },
+      {
+        "$sort": {
+          "sortKey": {
+            "_id": 1
+          }
+        },
+        "totalDataSizeSortedBytesEstimate": 1715,
+        "usedDisk": false,
+        "spills": 0,
+        "spilledBytes": 0,
+        "spilledRecords": 0,
+        "spilledDataStorageSize": 0,
+        "nReturned": 7,
+        "executionTimeMillisEstimate": 149,
+        "peakTrackedMemBytes": 1715
+      }
+    ],
+    "queryShapeHash": "D1597ED3459CEF061CE797437FA49520A8D3ED6513A8E8354EB6BED7DF6FDCC4",
+    "peakTrackedMemBytes": 350,
+    "serverInfo": {
+      "host": "DESKTOP-4R5R4MV",
+      "port": 27017,
+      "version": "8.3.4",
+      "gitVersion": "4b03e7daaa316c78b9bf433046dba81637d581c0"
+    },
+    "serverParameters": {
+      "internalQueryFacetBufferSizeBytes": 104857600,
+      "internalDocumentSourceGroupMaxMemoryBytes": 104857600,
+      "internalQueryMaxBlockingSortMemoryUsageBytes": 104857600,
+      "internalDocumentSourceSetWindowFieldsMaxMemoryBytes": 104857600,
+      "internalQueryFacetMaxOutputDocSizeBytes": 104857600,
+      "internalLookupStageIntermediateDocumentMaxSizeBytes": 104857600,
+      "internalQueryProhibitBlockingMergeOnMongoS": 0,
+      "internalQueryMaxAddToSetBytes": 104857600,
+      "internalQueryFrameworkControl": "trySbeRestricted",
+      "internalQueryPlannerIgnoreIndexWithCollationForRegex": 1
+    },
+    "command": {
+      "aggregate": "transactions",
+      "pipeline": [
+        {
+          "$match": {
+            "issueDate": {
+              "$gte": "2026-04-15 14:41:45.273000"
+            }
+          }
+        },
+        {
+          "$group": {
+            "_id": {
+              "$month": "$issueDate"
+            },
+            "count": {
+              "$sum": 1
+            }
+          }
+        },
+        {
+          "$sort": {
+            "_id": 1
+          }
+        }
+      ],
+      "cursor": {},
+      "$db": "library_analytics"
+    },
+    "ok": 1.0
+  },
+  "after": {
+    "explainVersion": "2",
+    "stages": [
+      {
+        "$cursor": {
+          "queryPlanner": {
+            "namespace": "library_analytics.transactions",
+            "parsedQuery": {
+              "issueDate": {
+                "$gte": "2026-04-15 14:41:45.273000"
+              }
+            },
+            "indexFilterSet": false,
+            "queryHash": "7BA113F4",
+            "planCacheShapeHash": "7BA113F4",
+            "planCacheKey": "F7F13284",
+            "optimizationTimeMillis": 0,
+            "cursorType": "regular",
+            "maxIndexedOrSolutionsReached": false,
+            "maxIndexedAndSolutionsReached": false,
+            "maxScansToExplodeReached": false,
+            "prunedSimilarIndexes": false,
+            "winningPlan": {
+              "isCached": false,
+              "queryPlan": {
+                "stage": "GROUP",
+                "planNodeId": 3,
+                "inputStage": {
+                  "stage": "PROJECTION_COVERED",
+                  "planNodeId": 2,
+                  "transformBy": {
+                    "issueDate": true,
+                    "_id": false
+                  },
+                  "inputStage": {
+                    "stage": "IXSCAN",
+                    "planNodeId": 1,
+                    "nss": "library_analytics.transactions",
+                    "keyPattern": {
+                      "issueDate": 1
+                    },
+                    "indexName": "issueDate_asc",
+                    "isMultiKey": false,
+                    "multiKeyPaths": {
+                      "issueDate": []
+                    },
+                    "isUnique": false,
+                    "isSparse": false,
+                    "isPartial": false,
+                    "indexVersion": 2,
+                    "direction": "forward",
+                    "indexBounds": {
+                      "issueDate": [
+                        "[new Date(1776264105273), new Date(9223372036854775807)]"
+                      ]
+                    }
+                  }
+                }
+              },
+              "slotBasedPlan": {
+                "slots": "$$RESULT=s8 env: { s3 = TimeZoneDatabase(America/Winnipeg...Canada/Newfoundland) (timeZoneDB) }",
+                "stages": "[3] project [s8 = newObj(\"_id\", s6, \"count\", s7)] \n[3] project [s7 = (convert ( s5, int32) ?: s5)] \n[3] group [s6] [s5 = count()] spillSlots[s4] mergingExprs[sum(s4)] \n[3] project [s6 = (\n    let [\n        l2.0 = month(s2, TimeZone(UTC)) \n    ] \n    in \n        if exists(l2.0) \n        then makeOwn(move(l2.0)) \n        else \n            if (typeMatch(s2, 1088) ?: true) \n            then null \n            else \n                if typeMatch(s2, 131712) \n                then Nothing \n                else fail(5157904, \"month parameter 'date' must be coercible to date\") \n?: null)] \n[1] ixseek seekKeyLow = KS(788000019D91974D3901) seekKeyHigh = KS(78FFFFFFFFFFFFFFFFFE) [s1 = recordId] [s2 = 0] @\"7e7df1c0-0a3d-476e-b0a6-661dd7969cd0\" @\"issueDate_asc\" forward "
+              }
+            },
+            "rejectedPlans": []
+          },
+          "executionStats": {
+            "executionSuccess": true,
+            "nReturned": 7,
+            "executionTimeMillis": 70,
+            "totalKeysExamined": 24606,
+            "totalDocsExamined": 0,
+            "executionStages": {
+              "stage": "project",
+              "planNodeId": 3,
+              "nReturned": 7,
+              "executionTimeMillisEstimate": 68,
+              "opens": 1,
+              "closes": 1,
+              "saveState": 7,
+              "restoreState": 6,
+              "isEOF": 1,
+              "projections": {
+                "8": "newObj(\"_id\", s6, \"count\", s7) "
+              },
+              "inputStage": {
+                "stage": "project",
+                "planNodeId": 3,
+                "nReturned": 7,
+                "executionTimeMillisEstimate": 68,
+                "opens": 1,
+                "closes": 1,
+                "saveState": 7,
+                "restoreState": 6,
+                "isEOF": 1,
+                "projections": {
+                  "7": "(convert ( s5, int32) ?: s5) "
+                },
+                "inputStage": {
+                  "stage": "group",
+                  "planNodeId": 3,
+                  "nReturned": 7,
+                  "executionTimeMillisEstimate": 68,
+                  "opens": 1,
+                  "closes": 1,
+                  "saveState": 7,
+                  "restoreState": 6,
+                  "isEOF": 1,
+                  "groupBySlots": [
+                    6
+                  ],
+                  "expressions": {
+                    "5": "count() ",
+                    "initExprs": {
+                      "5": null,
+                      "mergingExprs": {
+                        "4": "sum(s4) "
+                      }
+                    }
+                  },
+                  "usedDisk": false,
+                  "spills": 0,
+                  "spilledBytes": 0,
+                  "spilledRecords": 0,
+                  "spilledDataStorageSize": 0,
+                  "peakTrackedMemBytes": 350,
+                  "inputStage": {
+                    "stage": "project",
+                    "planNodeId": 3,
+                    "nReturned": 24606,
+                    "executionTimeMillisEstimate": 56,
+                    "opens": 1,
+                    "closes": 1,
+                    "saveState": 7,
+                    "restoreState": 6,
+                    "isEOF": 1,
+                    "projections": {
+                      "6": "(\n    let [\n        l2.0 = month(s2, TimeZone(UTC)) \n    ] \n    in \n        if exists(l2.0) \n        then makeOwn(move(l2.0)) \n        else \n            if (typeMatch(s2, 1088) ?: true) \n            then null \n            else \n                if typeMatch(s2, 131712) \n                then Nothing \n                else fail(5157904, \"month parameter 'date' must be coercible to date\") \n?: null) "
+                    },
+                    "inputStage": {
+                      "stage": "ixseek",
+                      "planNodeId": 1,
+                      "nReturned": 24606,
+                      "executionTimeMillisEstimate": 37,
+                      "opens": 1,
+                      "closes": 1,
+                      "saveState": 7,
+                      "restoreState": 6,
+                      "isEOF": 1,
+                      "indexName": "issueDate_asc",
+                      "keysExamined": 24606,
+                      "seeks": 1,
+                      "numReads": 24607,
+                      "recordIdSlot": 1,
+                      "outputSlots": [
+                        2
+                      ],
+                      "indexKeysToInclude": "00000000000000000000000000000001",
+                      "seekKeyLow": "KS(788000019D91974D3901) ",
+                      "seekKeyHigh": "KS(78FFFFFFFFFFFFFFFFFE) "
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "nReturned": 7,
+        "executionTimeMillisEstimate": 69
+      },
+      {
+        "$sort": {
+          "sortKey": {
+            "_id": 1
+          }
+        },
+        "totalDataSizeSortedBytesEstimate": 1715,
+        "usedDisk": false,
+        "spills": 0,
+        "spilledBytes": 0,
+        "spilledRecords": 0,
+        "spilledDataStorageSize": 0,
+        "nReturned": 7,
+        "executionTimeMillisEstimate": 69,
+        "peakTrackedMemBytes": 1715
+      }
+    ],
+    "queryShapeHash": "D1597ED3459CEF061CE797437FA49520A8D3ED6513A8E8354EB6BED7DF6FDCC4",
+    "peakTrackedMemBytes": 350,
+    "serverInfo": {
+      "host": "DESKTOP-4R5R4MV",
+      "port": 27017,
+      "version": "8.3.4",
+      "gitVersion": "4b03e7daaa316c78b9bf433046dba81637d581c0"
+    },
+    "serverParameters": {
+      "internalQueryFacetBufferSizeBytes": 104857600,
+      "internalDocumentSourceGroupMaxMemoryBytes": 104857600,
+      "internalQueryMaxBlockingSortMemoryUsageBytes": 104857600,
+      "internalDocumentSourceSetWindowFieldsMaxMemoryBytes": 104857600,
+      "internalQueryFacetMaxOutputDocSizeBytes": 104857600,
+      "internalLookupStageIntermediateDocumentMaxSizeBytes": 104857600,
+      "internalQueryProhibitBlockingMergeOnMongoS": 0,
+      "internalQueryMaxAddToSetBytes": 104857600,
+      "internalQueryFrameworkControl": "trySbeRestricted",
+      "internalQueryPlannerIgnoreIndexWithCollationForRegex": 1
+    },
+    "command": {
+      "aggregate": "transactions",
+      "pipeline": [
+        {
+          "$match": {
+            "issueDate": {
+              "$gte": "2026-04-15 14:41:45.273000"
+            }
+          }
+        },
+        {
+          "$group": {
+            "_id": {
+              "$month": "$issueDate"
+            },
+            "count": {
+              "$sum": 1
+            }
+          }
+        },
+        {
+          "$sort": {
+            "_id": 1
+          }
+        }
+      ],
+      "cursor": {},
+      "$db": "library_analytics"
+    },
+    "ok": 1.0
+  },
+  "note": "The issueDate_asc index is recreated after the no-index explain. Other indexes remain unchanged. Results depend on dataset size, hardware, cache state, and MongoDB version."
+}
